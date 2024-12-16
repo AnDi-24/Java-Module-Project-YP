@@ -5,64 +5,51 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello to 24 Heures du Mans!");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите марку автомобиля для пилота № 1");
-        String nameA = scanner.nextLine();
-        System.out.println("Введите марку автомобиля для пилота № 2");
-        String nameB = scanner.nextLine();
-        System.out.println("Введите марку автомобиля для пилота № 3");
-        String nameC = scanner.nextLine();
+        System.out.println("Введите название автомобиля для пилота № 1");
+        String nameA = nameValidation(scanner);
+        System.out.println("Введите название автомобиля для пилота № 2");
+        String nameB = nameValidation(scanner);
+        System.out.println("Введите название автомобиля для пилота № 3");
+        String nameC = nameValidation(scanner);
         System.out.println("Введите скорость (0 - 250 км/ч) для " + nameA);
-        Vehicle a = null;
-        while (true) {
-            int speedA = scanner.nextInt();
-            if ((speedA < 0) || (speedA > 250)) {
-                System.out.println("Скорость должна быть от 0 до 250 км/ч");
-            } else {
-                a = new Vehicle(nameA, speedA);
-                break;
-            }
-        }
+        Vehicle a;
+        int speedA = speedValidation(scanner);
+        a = new Vehicle(nameA, speedA);
         System.out.println("Введите скорость (0 - 250 км/ч) для " + nameB);
-        Vehicle b = null;
-        while (true) {
-            int speedB = scanner.nextInt();
-            if ((speedB < 0) || (speedB > 250)) {
-                System.out.println("Скорость должна быть от 0 до 250 км/ч");
-            } else {
-                b = new Vehicle(nameB, speedB);
-                break;
-            }
-        }
+        Vehicle b;
+        int speedB = speedValidation(scanner);
+        b = new Vehicle(nameB, speedB);
         System.out.println("Введите скорость (0 - 250 км/ч) для " + nameC);
-        Vehicle c = null;
-        while (true) {
-            int speedC = scanner.nextInt();
-            if ((speedC < 0) || (speedC > 250)) {
-                System.out.println("Скорость должна быть от 0 до 250 км/ч");
-            } else {
-                c = new Vehicle(nameC, speedC);
-                break;
-            }
-        }
-
-        Race win = new Race (a.speed, b.speed, c.speed, a.name, b.name, c.name);
+        Vehicle c;
+        int speedC = speedValidation(scanner);
+        c = new Vehicle(nameC, speedC);
+        Race win = new Race(a.speed, b.speed, c.speed, a.name, b.name, c.name);
         if (win.winner.equals(a.name)) {
             System.out.println("Победил пилот на " + a.name);
-        }else if (win.winner.equals(b.name)) {
+        } else if (win.winner.equals(b.name)) {
             System.out.println("Победил пилот на " + b.name);
-        }else if (win.winner.equals(c.name)) {
+        } else if (win.winner.equals(c.name)) {
             System.out.println("Победил пилот на " + c.name);
         }
-
     }
-
+    private static int speedValidation(Scanner scanner) {
+        int speed;
+        while (!scanner.hasNextInt() || (speed = scanner.nextInt()) > 250 || speed < 0) {
+            scanner.nextLine();
+            System.out.println("Скорость должна быть целым числом от 0 до 250, попробуйте еще");
+        }
+        return speed;
     }
-
-
-
-
-
-
-
-
-
+    private static String nameValidation(Scanner scanner) {
+        String name;
+        while (true) {
+            name = scanner.nextLine().trim();
+            if (name.isEmpty()) {
+                System.out.println("Название не может быть пустым, попробуйте еще");
+            } else {
+                break;
+            }
+        }
+        return name;
+    }
+}
